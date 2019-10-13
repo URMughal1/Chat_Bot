@@ -1,6 +1,14 @@
 import sys
 from datetime import datetime
+from difflib import get_close_matches
 
+
+def closeMatches(word,patterns):
+    #patterns=(patterns.title()).replace(" ","")
+    print(patterns)
+    print(word)
+    print(get_close_matches(word, patterns))
+    return str(get_close_matches(word, patterns,n=3))
 # Making Time stemped File name
 dateTimeObj = datetime.now()
 timestampStr = dateTimeObj.strftime("%d-%b-%Y_(%H-%M-%S)")
@@ -8,7 +16,7 @@ write_to_text=open("CH_"+timestampStr+".txt","w+")
 write_to_text.write("Time: "+ timestampStr + " \n ")
 
 #Trucks brand names
-Brands_Name=["Scania","MAN","PACCAR","Iveco","Hino","Volvo","Navistar","Dongfeng","TATA","Daimler"]
+Brands_Name=['Scania','MAN','PACCAR','Iveco','Hino','Volvo','Navistar','Dongfeng','TATA','Daimler']
 
 
 #Check if the Input is Integer or not
@@ -39,12 +47,12 @@ def Check_isEmpty(Question, C_input):
 def Truck_Information(Number):
     write_to_text.write("Chatbot: What is the "+Number+" brand Name?" + " \n ")
     print("Chatbot: What is the "+Number+" brand Name?")
-    Brand_Name = Check_isEmpty("Chatbot: What is the "+Number+" brand Name?",input("Customer: "))
+    Brand_Name = closeMatches(Check_isEmpty("Chatbot: What is the "+Number+" brand Name?",input("Customer: ")),Brands_Name)
     write_to_text.write("Customer: "+ Brand_Name + " \n ")
-    while(not any(Brand_Name.lower() in s.lower() for s in Brands_Name)):
+    while(not Brands_Name):
         write_to_text.write("Chatbot: What is the " + Number + " brand Name?[Entered Brand Not Found]" + " \n ")
         print("Chatbot: What is the " + Number + " brand Name?[Entered Brand Not Found]")
-        Brand_Name = input("Customer: ")
+        Brand_Name = closeMatches(input("Customer: "),Brands_Name)
         write_to_text.write("Customer: " + Brand_Name + " \n ")
 
     write_to_text.write("Chatbot: How Many Trucks in " + Brand_Name + "? (IN NUMBER)" + " \n ")
