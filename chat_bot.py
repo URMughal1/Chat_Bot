@@ -7,10 +7,20 @@ import sys
 from datetime import datetime
 from difflib import get_close_matches
 
-# Closest word match function 
+# Closest word match function
 def closeMatches(word,patterns):
+    #if(any(word.lower() in s.lower() for s in patterns)):
+    for p in patterns:
+        if(p.lower()== word.lower()):
+           return p
     try:
         sw=get_close_matches(word, patterns, n=1)[0]
+        write_to_text.write("Chatbot: Do you mean "+ str(sw) +" ?[Yes/No]" + " \n ")
+        print("Chatbot: Do you mean "+ str(sw) +" ?[Yes/No]")
+        C_input = Check_isEmpty("Chatbot: Do you mean "+ str(sw) +" ?[Yes/No]", input("Customer: "))
+        write_to_text.write("Customer: " + C_input + " \n ")
+        if(C_input.lower()=="n" or C_input.lower()=="no"):
+            return ""
     except IndexError:
         sw=""
     return str(sw)
